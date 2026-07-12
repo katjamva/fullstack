@@ -26,6 +26,6 @@ sequenceDiagram
   
   browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
   activate server
-  server-->>browser: [{"content": "hello", "date": "2026-07-12T08:46:16.288Z" }, ... ]
+  server->>browser: [{"content": "hello", "date": "2026-07-12T08:46:16.288Z" }, ... ]
   deactivate server    
 ```
