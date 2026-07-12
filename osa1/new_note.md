@@ -1,4 +1,4 @@
-sequenceDiagram
+```sequenceDiagram
   participant browser
   participant server
 
@@ -25,3 +25,4 @@ sequenceDiagram
   activate server
   server-->>browser: [{"content": "hello", "date": "2026-07-12T08:46:16.288Z" }, ... ]
   deactivate server    
+```
