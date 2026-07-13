@@ -9,7 +9,7 @@ sequenceDiagram
   Note right of server: Server saves the new note
 
   server-->>browser: 201 Created
-  deactivate the server
+  deactivate server
 
   Note right of browser: JavaScript adds the new note to the page without reloading the page
 ``` 
