@@ -80,6 +80,8 @@ const App = () => {
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(search.toLowerCase()),
   )
+  console.log('persons:', persons)
+  console.log('is array:', Array.isArray(persons)) 
 
   const handleAddPerson = (event) => {
     setNewName(event.target.value)
