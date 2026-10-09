@@ -71,10 +71,35 @@ test('missing likes property defaults to value 0', async () => {
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
-        
+
     const blogsAtEnd = await helper.blogsInDb()
     const saved = blogsAtEnd.find(blog => blog.title === "TDD harms architecture")
     assert.strictEqual(saved.likes, 0)
+})
+
+test('fails with status code 400 if no title', async () => {
+    const newBlog = {
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+})
+
+test('fails with status code 400 if no url', async () => {
+    const newBlog = {
+        title: "First class tests",
+        author: "Robert C. Martin",
+        likes: 10
+    }
+
+    await api  
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
 })
 
 after(async () => {
