@@ -102,6 +102,20 @@ test('fails with status code 400 if no url', async () => {
         .expect(400)
 })
 
+test('deletes a single blog with status 204', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+    blogsAtEnd = await helper.blogsInDb()
+
+    const blogs = blogsAtEnd.map((blog) => blog.title)
+    assert(!blogs.includes(blogToDelete.title))
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length-1)
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
