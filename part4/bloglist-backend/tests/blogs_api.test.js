@@ -116,6 +116,25 @@ test('deletes a single blog with status 204', async () => {
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length-1)
 })
 
+test('update blog', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const updated = {...blogToUpdate, likes: blogToUpdate.likes + 1}
+
+    await api   
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(updated)
+        .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    const blogAfterUpdate = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
+
+    assert.strictEqual(blogAfterUpdate.likes, blogToUpdate.likes+1)
+
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
