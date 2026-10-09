@@ -51,13 +51,30 @@ test('a valid blog can be added', async () => {
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
-    const response = await api.get('/api/blogs')
-
-    const titles = response.body.map(r => r.title)
-
-    assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
-
+    const blogsAtEnd = await helper.blogsInDb()
+    
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+    
+    const titles = blogsAtEnd.map(blog => blog.title)
     assert(titles.includes("Type wars"))
+
+})
+
+test('missing likes property defaults to value 0', async () => {
+    const newBlog = {
+        title: "TDD harms architecture",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+    }
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+        
+    const blogsAtEnd = await helper.blogsInDb()
+    const saved = blogsAtEnd.find(blog => blog.title === "TDD harms architecture")
+    assert.strictEqual(saved.likes, 0)
 })
 
 after(async () => {
